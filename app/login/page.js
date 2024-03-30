@@ -17,12 +17,14 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/navigation'
 import link from 'next/link'
 
 const Page = () => {
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [rememberMe, setRememberMe] = useState(true)
     const [showPassword, setShowPassword] = React.useState(false);
+    const router = useRouter()
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -32,12 +34,13 @@ const Page = () => {
 
     return (
         <div>
-            <div className='flex justify-center items-center px-7 pt-10'>
+            <div className='flex justify-center items-center pr-3 md:px-7 md:pt-10'>
                 <div className='bg-gray-100 w-[57%] py-10 hidden md:flex md:justify-center rounded-2xl'>
                     <Image className='w-[70%] h-[auto] rounded-3xl' src={Login} alt="login" />
                 </div>
-                <div className='flex-1 text-gray-700 w-[40%] ml-10'>
-                    <h1 className='text-4xl font-medium'>Welcome to STOREYS! 👋🏻</h1>
+                <div className='flex-1 text-gray-700 w-[40%] ml-3 md:ml-10'>
+                    <Image className='w-[70%] h-[auto] rounded-3xl mb-10 pt-5 md:hidden' src={Logo} alt="logo" />
+                    <h1 className='text-3xl md:text-4xl font-medium'>Welcome to STOREYS! <span className="hidden md:inline">👋🏻</span></h1>
                     <p className='mt-3 mb-4 text-gray-500'>Please sign-in to your account and start the adventure</p>
                     <div>
                         <Box
@@ -50,7 +53,6 @@ const Page = () => {
                         >
                             <TextField id="outlined-basic" label="Email" variant="outlined" className="mt-3" />
                         </Box>
-                        {/* <input className='block mt-1 w-[100%] py-2 px-3 rounded-lg outline-[#902bf5]' style={{ border: "1px solid #ccc", borderRadius: "6px" }} type='text' id="email" placeholder='Email Address' /> */}
                         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             <FormControl sx={{ width: '100%' }} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password" className="mt-6">Password</InputLabel>
@@ -82,7 +84,7 @@ const Page = () => {
                         <p className="text-[#902bf5]">Forget Password?</p>
                     </div>
                     <Stack spacing={2} direction="row">
-                        <Button className="bg-[#902bf5] w-[100%] h-[30px] text-white py-6 mt-7" variant="text">Text</Button>
+                        <Button onClick={()=>{router.push('/dashboard/admin')}} className="bg-[#902bf5] w-[100%] h-[30px] text-white py-6 mt-7" variant="text">Sign In</Button>
                     </Stack>
                     <div className="flex justify-center mt-4">
                         <p>New on Our Platform? </p>
