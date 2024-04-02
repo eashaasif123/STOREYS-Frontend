@@ -7,9 +7,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation'
 import axios from "axios"
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const [name, setName] = useState('');
@@ -18,6 +18,7 @@ const Page = () => {
   const [qualification, setQualification] = useState('');
   const [address, setAddress] = useState('');
   const [file, setFile] = useState(null);
+  const router = useRouter();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -44,8 +45,9 @@ const Page = () => {
     setFile(uploadedFile);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
@@ -54,27 +56,38 @@ const Page = () => {
     formData.append('address', address);
     formData.append('file', file);
 
-    axios.post('http://localhost:8080/register', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(() => {
-      // router.push('/dashboard/admin');
-    }).catch(error => {
-      console.error(error);
-      return;
-    })
-    toast.success('Registered successfully! Check your Email!', {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    try {
+      const response = await axios.post('http://localhost:8080/api/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
+      router.push('/login');
+      toast.success('Registered successfully! Check your Email!', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error(error?.response?.data?.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // Handle error if necessary
+    }
   };
+
   return (
     <div>
       <div className='flex justify-center items-center pr-3 md:px-7 md:pt-10'>

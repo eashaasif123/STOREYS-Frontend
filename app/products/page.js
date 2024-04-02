@@ -253,8 +253,8 @@ export default function Dashboard() {
                                 size="icon"
                                 className="overflow-hidden rounded-full"
                             >
-                                <Image
-                                    src="/placeholder-user.jpg"
+                                <img
+                                    src="https://ui.shadcn.com/placeholder-user.jpg"
                                     width={36}
                                     height={36}
                                     alt="Avatar"
@@ -355,7 +355,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
@@ -398,7 +398,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
@@ -441,7 +441,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
@@ -484,7 +484,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
@@ -527,7 +527,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
@@ -570,7 +570,7 @@ export default function Dashboard() {
                                                         alt="Product image"
                                                         className="aspect-square rounded-md object-cover"
                                                         height="64"
-                                                        src="/placeholder.svg"
+                                                        src="https://ui.shadcn.com/placeholder.svg"
                                                         width="64"
                                                     />
                                                 </TableCell>
