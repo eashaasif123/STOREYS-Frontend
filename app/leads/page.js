@@ -20,7 +20,6 @@ import {
     Users2,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -63,11 +62,14 @@ import {
 } from "@/components/ui/tooltip"
 import DataTableDemo from "./table"
 import UploadDialog from './UploadDialog'
-import axios from "axios"
+import AssignLeadsDialog from './AssignLead'
 
 export default function Dashboard() {
     const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [selectedLeads, setSelectedLeads] = useState([]);
     const [fetchData, setFetchData] = useState(false);
+
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
             <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col shadow-md border-r bg-background sm:flex">
@@ -273,8 +275,8 @@ export default function Dashboard() {
                         <div className="flex items-center">
                             <TabsList>
                                 <TabsTrigger value="all">All</TabsTrigger>
-                                <TabsTrigger value="active">Unassigned Leads</TabsTrigger>
-                                <TabsTrigger value="draft">Assigned Leads</TabsTrigger>
+                                <TabsTrigger value="unassigned">Unassigned Leads</TabsTrigger>
+                                <TabsTrigger value="assigned">Assigned Leads</TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-2">
                                 <DropdownMenu>
@@ -321,7 +323,45 @@ export default function Dashboard() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <DataTableDemo fetchDataAgain={fetchData}/>
+                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"all"}/>
+                                </CardContent>
+                                <CardFooter>
+                                    <div className="text-xs text-muted-foreground">
+                                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
+                                        products
+                                    </div>
+                                </CardFooter>
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="unassigned">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Unassigned Leads</CardTitle>
+                                    <CardDescription>
+                                        Manage your Leads and view their performance.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"unassigned"}/>
+                                </CardContent>
+                                <CardFooter>
+                                    <div className="text-xs text-muted-foreground">
+                                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
+                                        products
+                                    </div>
+                                </CardFooter>
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="assigned">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Assigned Leads</CardTitle>
+                                    <CardDescription>
+                                        Manage your Leads and view their performance.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"assigned"}/>
                                 </CardContent>
                                 <CardFooter>
                                     <div className="text-xs text-muted-foreground">
@@ -335,6 +375,7 @@ export default function Dashboard() {
                 </main>
             </div>
             <UploadDialog fetchData={fetchData} setFetchData={setFetchData} open={open} setOpen={setOpen}/>
+            <AssignLeadsDialog fetchData={fetchData} setFetchData={setFetchData} open={open1} setOpen={setOpen1} selectedLeads={selectedLeads}/>
         </div>
     )
 }

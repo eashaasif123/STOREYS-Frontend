@@ -1,42 +1,12 @@
-'use client'
-
 import * as React from "react";
-import {
-    CaretSortIcon,
-    ChevronDownIcon,
-    DotsHorizontalIcon,
-} from "@radix-ui/react-icons";
-import {
-    ColumnDef,
-    useReactTable,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-} from "@tanstack/react-table";
-
+import { CaretSortIcon, ChevronDownIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { ColumnDef, useReactTable, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import axios from "axios"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import axios from "axios";
 
 const columns = [
     {
@@ -47,7 +17,7 @@ const columns = [
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && "indeterminate")
                 }
-                style={{border: "1px solid #000"}}
+                style={{ border: "1px solid #000" }}
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label="Select all"
             />
@@ -55,7 +25,7 @@ const columns = [
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
-                style={{border: "1px solid #000"}}
+                style={{ border: "1px solid #000" }}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 aria-label="Select row"
             />
@@ -69,6 +39,7 @@ const columns = [
         cell: ({ row }) => (
             <div className="capitalize">{row.getValue("name")}</div>
         ),
+        showOnMobile: true, // Added this property to show on mobile
     },
     {
         accessorKey: "source",
@@ -76,6 +47,7 @@ const columns = [
         cell: ({ row }) => (
             <div className="capitalize">{row.getValue("source")}</div>
         ),
+        showOnMobile: false, // Hide on mobile
     },
     {
         accessorKey: "email",
@@ -91,6 +63,7 @@ const columns = [
             );
         },
         cell: ({ row }) => <div className="lowercase hidden md:block">{row.getValue("email")}</div>,
+        showOnMobile: false, // Hide on mobile
     },
     {
         accessorKey: "phone",
@@ -98,6 +71,7 @@ const columns = [
         cell: ({ row }) => (
             <div className="capitalize hidden md:block">{row.getValue("phone")}</div>
         ),
+        showOnMobile: false, // Hide on mobile
     },
     {
         id: "actions",
@@ -129,10 +103,10 @@ const columns = [
     },
 ];
 
-export default function DataTableDemo({ fetchDataAgain }) {
+export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSelectedLeads, leadsType }) {
     const FetchData = async () => {
-        try{
-            const response = await axios.get(`http://localhost:8080/api/leads`, {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/leads?type=${leadsType}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -147,11 +121,12 @@ export default function DataTableDemo({ fetchDataAgain }) {
                 }
             })
             setData(FinalData);
-        }catch(err){
+        } catch (err) {
             console.error(err);
         }
     }
-    React.useEffect(()=>{
+    React.useEffect(() => {
+        console.log('fetching')
         FetchData();
     }, [fetchDataAgain])
     const [data, setData] = React.useState([]);
@@ -179,112 +154,118 @@ export default function DataTableDemo({ fetchDataAgain }) {
         },
     });
 
-    return (
-        React.createElement("div", { className: "w-full" },
-            React.createElement("div", { className: "flex items-center py-4" },
-                React.createElement(Input, {
-                    placeholder: "Filter emails...",
-                    value: (table.getColumn("email")?.getFilterValue() || ""),
-                    onChange: (event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value),
-                    className: "max-w-sm",
-                }),
-                React.createElement(DropdownMenu, null,
-                    React.createElement(DropdownMenuTrigger, { asChild: true },
-                        React.createElement(Button, { variant: "outline", className: "ml-auto" },
-                            "Columns ",
-                            React.createElement(ChevronDownIcon, { className: "ml-2 h-4 w-4" }))),
+    const handleSelectLeads = () => {
+        setOpen1(!open1);
+        const selectedLeads = table.getFilteredSelectedRowModel().rows.map(row => row.original);
+        setSelectedLeads(selectedLeads)
+        console.log(selectedLeads);
+    }
 
-                    React.createElement(DropdownMenuContent, { align: "end" },
-                        table
+    return (
+        <div className="w-full">
+            <div className="flex items-center py-4">
+                <Input
+                    placeholder="Filter name..."
+                    value={(table.getColumn("name")?.getFilterValue() || "")}
+                    onChange={(event) =>
+                        table.getColumn("name")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="ml-auto">
+                            Columns
+                            <ChevronDownIcon className="ml-2 h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        {table
                             .getAllColumns()
                             .filter((column) => column.getCanHide())
                             .map((column) => {
                                 return (
-                                    React.createElement(DropdownMenuCheckboxItem, {
-                                        key: column.id,
-                                        className: "capitalize",
-                                        checked: column.getIsVisible(),
-                                        onCheckedChange: (value) =>
-                                            column.toggleVisibility(!!value),
-                                    },
-                                        column.id
-                                    )
+                                    <DropdownMenuCheckboxItem
+                                        key={column.id}
+                                        className="capitalize"
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={(value) =>
+                                            column.toggleVisibility(!!value)
+                                        }
+                                    >
+                                        {column.id}
+                                    </DropdownMenuCheckboxItem>
                                 );
-                            })))
-            ),
-            React.createElement("div", { className: "rounded-md border" },
-                React.createElement(Table, null,
-                    React.createElement(TableHeader, null,
-                        table.getHeaderGroups().map((headerGroup) =>
-                            React.createElement(TableRow, { key: headerGroup.id },
-                                headerGroup.headers.map((header) => {
+                            })}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <div className="rounded-md border">
+                <Table>
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => {
                                     return (
-                                        React.createElement(TableHead, { key: header.id },
-                                            header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                ))
+                                        <TableHead key={header.id}>
+                                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                                        </TableHead>
                                     );
-                                })
-                            )
-                        )
-                    ),
-                    React.createElement(TableBody, null,
-                        table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) =>
-                                React.createElement(TableRow, {
-                                    key: row.id,
-                                    "data-state": row.getIsSelected() && "selected",
-                                },
-                                    row.getVisibleCells().map((cell) =>
-                                        React.createElement(TableCell, { key: cell.id },
-                                            flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            ))
-                                    )
-                                )
-                            )
+                                })}
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && "selected"}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
                         ) : (
-                            React.createElement(TableRow, null,
-                                React.createElement(TableCell, {
-                                    colSpan: columns.length,
-                                    className: "h-24 text-center",
-                                },
-                                    "No results."
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            React.createElement("div", { className: "flex items-center justify-end space-x-2 py-4" },
-                React.createElement("div", { className: "flex-1 text-sm text-muted-foreground" },
-                    table.getFilteredSelectedRowModel().rows.length, " of ",
-                    table.getFilteredRowModel().rows.length, " row(s) selected."
-                ),
-                React.createElement("div", { className: "space-x-2" },
-                    React.createElement(Button, {
-                        variant: "outline",
-                        size: "sm",
-                        onClick: () => table.previousPage(),
-                        disabled: !table.getCanPreviousPage(),
-                    },
-                        "Previous"
-                    ),
-                    React.createElement(Button, {
-                        variant: "outline",
-                        size: "sm",
-                        onClick: () => table.nextPage(),
-                        disabled: !table.getCanNextPage(),
-                    },
-                        "Next"
-                    )
-                )
-            )
-        )
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+            <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="flex-1 text-sm text-muted-foreground">
+                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                </div>
+                <div className="space-x-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        Previous
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        Next
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={handleSelectLeads}>
+                        Assign Lead
+                    </Button>
+                </div>
+            </div>
+        </div>
     );
 }
