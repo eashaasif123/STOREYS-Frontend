@@ -163,7 +163,7 @@ const Page = () => {
                 className="w-full mt-3" id="outlined-basic" label="Address" variant="outlined" />
             </Box>
           </div>
-          <div className="flex items-center justify-center w-full mt-3">
+          <div className="flex flex-col md:flex-row items-center justify-center w-full mt-3">
             <label htmlFor="upload" className="bg-[#902bf5] px-4 py-2 rounded-md text-white cursor-pointer">
               <span role="img" aria-label="Upload" className="mr-2">
                 📤

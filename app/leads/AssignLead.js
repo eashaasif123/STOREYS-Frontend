@@ -127,7 +127,6 @@ export default function AssignLeadsDialog({ fetchData, setFetchData, open, setOp
                         </div>
                     </div>
                         </>) : (<>
-
                             <DialogContentText id="alert-dialog-description">
                         Choose from which of the following Peoples you want to assign Leads.
                     </DialogContentText>
@@ -155,17 +154,9 @@ export default function AssignLeadsDialog({ fetchData, setFetchData, open, setOp
                     </div>
                         </>)
                     }
-                    
-
                 </DialogContent>
                 <div className="flex items-center justify-center w-full mt-3">
                 </div>
-                <DialogActions>
-                    <Button onClick={handleClose}>Close</Button>
-                    <Button autoFocus>
-                        Upload
-                    </Button>
-                </DialogActions>
             </Dialog>
         </React.Fragment>
     );

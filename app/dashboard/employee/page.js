@@ -61,8 +61,6 @@ import {
     TooltipProvider
 } from "@/components/ui/tooltip"
 import DataTableDemo from "./table"
-import UploadDialog from './UploadDialog'
-import AssignLeadsDialog from './AssignLead'
 
 export default function Dashboard() {
     const [open, setOpen] = useState(false);
@@ -144,8 +142,7 @@ export default function Dashboard() {
                         </TooltipTrigger>
                         <TooltipContent side="right">Analytics</TooltipContent>
                     </Tooltip>
-                                </TooltipProvider>
-                    
+                </TooltipProvider>
                 </nav>
                 <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-4">
                 <TooltipProvider>
@@ -275,11 +272,6 @@ export default function Dashboard() {
                 <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-8">
                     <Tabs defaultValue="all">
                         <div className="flex items-center">
-                            <TabsList>
-                                <TabsTrigger value="all">All</TabsTrigger>
-                                <TabsTrigger value="unassigned">Unassigned Leads</TabsTrigger>
-                                <TabsTrigger value="assigned">Assigned Leads</TabsTrigger>
-                            </TabsList>
                             <div className="ml-auto flex items-center gap-2">
                                 <DropdownMenu>
                                     {/* <DropdownMenuTrigger asChild>
@@ -308,12 +300,6 @@ export default function Dashboard() {
                                         Export
                                     </span>
                                 </Button> */}
-                                <Button onClick={()=>{setOpen(true)}} size="sm" className="h-7 gap-1">
-                                    <PlusCircle className="h-3.5 w-3.5" />
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Add Leads
-                                    </span>
-                                </Button>
                             </div>
                         </div>
                         <TabsContent value="all">
@@ -325,45 +311,7 @@ export default function Dashboard() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"all"}/>
-                                </CardContent>
-                                <CardFooter>
-                                    <div className="text-xs text-muted-foreground">
-                                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                                        products
-                                    </div>
-                                </CardFooter>
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="unassigned">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Unassigned Leads</CardTitle>
-                                    <CardDescription>
-                                        Manage your Leads and view their performance.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"unassigned"}/>
-                                </CardContent>
-                                <CardFooter>
-                                    <div className="text-xs text-muted-foreground">
-                                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                                        products
-                                    </div>
-                                </CardFooter>
-                            </Card>
-                        </TabsContent>
-                        <TabsContent value="assigned">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Assigned Leads</CardTitle>
-                                    <CardDescription>
-                                        Manage your Leads and view their performance.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"assigned"}/>
+                                    <DataTableDemo />
                                 </CardContent>
                                 <CardFooter>
                                     <div className="text-xs text-muted-foreground">
@@ -376,8 +324,6 @@ export default function Dashboard() {
                     </Tabs>
                 </main>
             </div>
-            <UploadDialog fetchData={fetchData} setFetchData={setFetchData} open={open} setOpen={setOpen}/>
-            <AssignLeadsDialog fetchData={fetchData} setFetchData={setFetchData} open={open1} setOpen={setOpen1} selectedLeads={selectedLeads}/>
         </div>
     )
 }

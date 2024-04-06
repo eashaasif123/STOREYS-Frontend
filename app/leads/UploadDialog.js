@@ -77,7 +77,7 @@ export default function UploadDialog({fetchData, setFetchData,  open, setOpen}) 
                         Upload the excel file and the Leads data should be uploaded.
                     </DialogContentText>
                 </DialogContent>
-                <div className="flex items-center justify-center w-full mt-3">
+                <div className="flex flex-col md:flex-row items-center justify-center w-full mt-3">
                     <label style={{border: "1px solid #000"}} htmlFor="upload" className="bg-[#fff] px-4 py-2 rounded-md cursor-pointer shadow-lg text-black">
                         <span role="img" aria-label="Upload" className="mr-2">
                             📤

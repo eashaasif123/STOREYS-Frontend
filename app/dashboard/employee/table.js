@@ -83,10 +83,14 @@ const columns = [
     },
 ];
 
-export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSelectedLeads, leadsType }) {
+export default function DataTableDemo() {
     const FetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/leads?type=${leadsType}`, {
+            let employeeid;
+            if (typeof window !== "undefined") {
+                employeeid = JSON.parse(localStorage.getItem("userData"))
+            }
+            const response = await axios.get(`http://localhost:8080/api/leads/${employeeid.userID}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -108,7 +112,7 @@ export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSele
     React.useEffect(() => {
         console.log('fetching')
         FetchData();
-    }, [fetchDataAgain])
+    }, [])
     const [data, setData] = React.useState([]);
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -244,11 +248,6 @@ export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSele
                     >
                         Next
                     </Button>
-                    {
-                        (leadsType==='unassigned' || leadsType==='all') && <Button variant="outline" disabled={!table.getFilteredSelectedRowModel().rows.length} size="sm" onClick={handleSelectLeads}>
-                        Assign Lead
-                    </Button>
-                    }
                 </div>
             </div>
         </div>

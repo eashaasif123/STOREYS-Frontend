@@ -19,8 +19,10 @@ import Button from '@mui/material/Button';
 import axios from "axios"
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation'
+import { useDispatch } from "react-redux"
 
 export default function Login() {
+    const dispatch = useDispatch();
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [stsID, setSTSID] = useState("");
     const [password, setPassword] = useState("");
@@ -42,8 +44,19 @@ export default function Login() {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log(response)
-            router.push('/dashboard/admin');
+                if (typeof window !== "undefined") {
+                localStorage.setItem("userData", JSON.stringify({
+                    userID: response.data.id
+                }));}
+
+                const email = response.data.name.toLowerCase();
+                console.log(email)
+                if(email.includes('admin')){
+                    router.push('/dashboard/admin');
+                }else{
+                    router.push('/dashboard/employee');
+                }
+
             toast.success('Login successfully!', {
                 position: "top-center",
                 autoClose: 2000,

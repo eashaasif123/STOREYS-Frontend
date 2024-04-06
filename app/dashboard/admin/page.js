@@ -1,3 +1,5 @@
+'use client'
+import * as React from 'react'
 import Link from "next/link"
 import {
     Activity,
@@ -43,12 +45,34 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import axios from 'axios'
 
 export default function Dashboard() {
+    const [data, setData] = React.useState([]);
+    const FetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/leads/limit?num=5`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log(response.data);
+            setData({
+                totalLeads: response.data.totalLeads,
+                leads: response.data.leads
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    React.useEffect(() => {
+        console.log('fetching')
+        FetchData();
+    }, [])
     return (
         <div className="flex min-h-screen w-full flex-col">
-            <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <header style={{ zIndex: 22 }} className="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <nav className="relative hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
                         href="#"
                         className="flex items-center gap-2 text-lg font-semibold md:text-base"
@@ -176,7 +200,7 @@ export default function Dashboard() {
                             <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">10,000</div>
+                            <div className="text-2xl font-bold">{data.totalLeads}</div>
                             <p className="text-xs text-muted-foreground">
                                 +20.1% from last month
                             </p>
@@ -251,110 +275,34 @@ export default function Dashboard() {
                                         <TableHead className="hidden xl:table-column">
                                             Date
                                         </TableHead>
-                                        <TableHead className="text-right">Amount</TableHead>
+                                        <TableHead className="text-right">Phone Number</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">Liam Johnson</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                liam@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge className="text-xs" variant="outline">
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-23
-                                        </TableCell>
-                                        <TableCell className="text-right">$250.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">Olivia Smith</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                olivia@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Refund
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge className="text-xs" variant="outline">
-                                                Declined
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-24
-                                        </TableCell>
-                                        <TableCell className="text-right">$150.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">Noah Williams</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                noah@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Subscription
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge className="text-xs" variant="outline">
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-25
-                                        </TableCell>
-                                        <TableCell className="text-right">$350.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">Emma Brown</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                emma@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge className="text-xs" variant="outline">
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-26
-                                        </TableCell>
-                                        <TableCell className="text-right">$450.00</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">Liam Johnson</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                liam@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge className="text-xs" variant="outline">
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-27
-                                        </TableCell>
-                                        <TableCell className="text-right">$550.00</TableCell>
-                                    </TableRow>
+                                    {
+                                        data?.leads?.map((Item) => (
+                                            <TableRow>
+                                            <TableCell>
+                                                <div className="font-medium">{Item.name}</div>
+                                                <div className="hidden text-sm text-muted-foreground md:inline">
+                                                    {Item.email}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="hidden xl:table-column">
+                                                Sale
+                                            </TableCell>
+                                            <TableCell className="hidden xl:table-column">
+                                                <Badge className="text-xs" variant="outline">
+                                                    Approved
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                                                2023-06-23
+                                            </TableCell>
+                                            <TableCell className="text-right">{Item.phone}</TableCell>
+                                        </TableRow>
+                                        ))
+                                    }
                                 </TableBody>
                             </Table>
                         </CardContent>
