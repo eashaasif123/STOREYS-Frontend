@@ -52,7 +52,7 @@ export default function Dashboard() {
     const [data, setData] = React.useState([]);
     const FetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/leads/limit?num=5`, {
+            const response = await axios.get(`https://storeys-backend.vercel.app/api/leads/limit?num=5`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

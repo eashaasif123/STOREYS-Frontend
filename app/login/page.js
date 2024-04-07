@@ -36,7 +36,7 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.get(`http://localhost:8080/api/register?STSID=${stsID}&password=${password}`, {
+            const response = await axios.get(`https://storeys-backend.vercel.app/api/register?STSID=${stsID}&password=${password}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

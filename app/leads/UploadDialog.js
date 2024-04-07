@@ -29,7 +29,7 @@ export default function UploadDialog({fetchData, setFetchData,  open, setOpen}) 
         formData.append('file', file);
     
         try {
-          await axios.post('http://localhost:8080/api/leads', formData, {
+          await axios.post('https://storeys-backend.vercel.app/api/leads', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

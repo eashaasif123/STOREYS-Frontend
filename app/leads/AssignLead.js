@@ -24,7 +24,7 @@ export default function AssignLeadsDialog({ fetchData, setFetchData, open, setOp
 
     const fetchEmployees = async (selectedData) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/register/employee?type=${selectedData}`, {
+            const response = await axios.get(`https://storeys-backend.vercel.app/api/register/employee?type=${selectedData}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -49,7 +49,7 @@ export default function AssignLeadsDialog({ fetchData, setFetchData, open, setOp
     const assignEmployee = async (employee) => {
         console.log(employee, selectedLeads)
         try {
-            await axios.post('http://localhost:8080/api/leads/assign', {
+            await axios.post('https://storeys-backend.vercel.app/api/leads/assign', {
                 leads: selectedLeads,
                 EmployeeID: employee._id
             } , {

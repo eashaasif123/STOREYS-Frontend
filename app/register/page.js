@@ -54,7 +54,7 @@ const Page = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/register', formData, {
+      const response = await axios.post('https://storeys-backend.vercel.app/api/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

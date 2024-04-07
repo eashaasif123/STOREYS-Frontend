@@ -86,7 +86,7 @@ const columns = [
 export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSelectedLeads, leadsType }) {
     const FetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/leads?type=${leadsType}`, {
+            const response = await axios.get(`https://storeys-backend.vercel.app/api/leads?type=${leadsType}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
