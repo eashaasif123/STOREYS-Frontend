@@ -1,9 +1,9 @@
 'use client'
-// import Footer from '@/components/Footer';
-// import Hero from '@/components/Hero';
-// import Header1 from '@/components/HomeHeader';
-// import Mission from '@/components/Mission';
-// import Services from '@/components/Services';
+// import Footer from '"@/app/components/Footer';
+// import Hero from '"@/app/components/Hero';
+// import Header1 from '"@/app/components/HomeHeader';
+// import Mission from '"@/app/components/Mission';
+// import Services from '"@/app/components/Services';
 import Login from './login/page';
 
 export default function Home() {

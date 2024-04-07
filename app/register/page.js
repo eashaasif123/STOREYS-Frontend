@@ -1,8 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import Login from '@/app/assets/register.png'
-import Logo from "@/app/assets/logo.png"
-import Image from 'next/image'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -92,7 +89,7 @@ const Page = () => {
     <div>
       <div className='flex justify-center items-center pr-3 md:px-7 md:pt-10'>
         <div className='flex-1 text-gray-700 w-[40%] ml-3 md:mr-10'>
-          <Image className='w-[70%] h-[auto] rounded-3xl mb-10 pt-5 md:hidden' src={Logo} alt="logo" />
+          <img className='w-[70%] h-[auto] rounded-3xl mb-10 pt-5 md:hidden' src='/assets/logo.png' alt="logo" />
           <h1 className='text-3xl md:text-4xl font-medium'>Welcome to STOREYS! <span className="hidden md:inline">👋🏻</span></h1>
           <p className='mt-3 mb-4 text-gray-500'>Please sign-in to your account and start the adventure</p>
           <div className="w-full">
@@ -183,7 +180,7 @@ const Page = () => {
           </div>
         </div>
         <div className='bg-gray-100 w-[47%] py-10 hidden md:flex md:justify-center rounded-2xl'>
-          <Image className='w-[70%] h-[auto] rounded-3xl' src={Login} alt="login" />
+          <img className='w-[70%] h-[auto] rounded-3xl' src='/assets/register.png' alt="login" />
         </div>
       </div>
     </div>

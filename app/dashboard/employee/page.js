@@ -27,8 +27,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Button } from "@/components/ui/button"
+} from "@/app/components/ui/breadcrumb"
+import { Button } from "@/app/components/ui/button"
 import {
     Card,
     CardContent,
@@ -36,7 +36,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/app/components/ui/card"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -45,21 +45,21 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/app/components/ui/dropdown-menu"
+import { Input } from "@/app/components/ui/input"
+import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet"
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "@/components/ui/tabs"
+} from "@/app/components/ui/tabs"
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
     TooltipProvider
-} from "@/components/ui/tooltip"
+} from "@/app/components/ui/tooltip"
 import DataTableDemo from "./table"
 
 export default function Dashboard() {

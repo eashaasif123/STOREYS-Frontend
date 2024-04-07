@@ -38,7 +38,7 @@ export default function Services() {
                                     Reignite customer engagement
                                 </div>
                                 <div className="self-center mt-4 text-base font-medium leading-6">
-                                    Capture your customers' attention with interactive games and
+                                    Capture your customers attention with interactive games and
                                     complement them with automated follow-up strategies
                                 </div>
                             </div>

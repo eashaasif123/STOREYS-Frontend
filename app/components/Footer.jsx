@@ -1,7 +1,4 @@
 import * as React from "react";
-import Logo from "../app/assets/logo.png"
-import Shape from "../app/assets/Shape.png"
-import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -10,7 +7,7 @@ export default function Footer() {
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex flex-col w-[32%] max-md:ml-0 max-md:w-full">
             <div className="flex flex-col max-md:mt-10">
-            <Image className="h-[40px] w-auto" src={Logo} alt=''/>
+            <img className="h-[40px] w-auto" src='/assets/logo.png' alt=''/>
               <div className="mt-14 text-sm text-neutral-600 max-md:mt-10">
                 Lorem ipsum dolor sit amet consectetur. Mi nibh venenatis in
                 suscipit turpis enim cursus vulputate amet. Lobortis mi platea

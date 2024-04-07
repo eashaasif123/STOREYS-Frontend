@@ -17,16 +17,17 @@ import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-} from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+} from "@/app/components/ui/avatar"
+// } from "@/app/components/ui/avatar"
+import { Badge } from "@/app/components/ui/badge"
+import { Button } from "@/app/components/ui/button"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/app/components/ui/card"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -34,9 +35,9 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/app/components/ui/dropdown-menu"
+import { Input } from "@/app/components/ui/input"
+import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet"
 import {
     Table,
     TableBody,
@@ -44,7 +45,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/app/components/ui/table"
 import axios from 'axios'
 
 export default function Dashboard() {
@@ -280,8 +281,8 @@ export default function Dashboard() {
                                 </TableHeader>
                                 <TableBody>
                                     {
-                                        data?.leads?.map((Item) => (
-                                            <TableRow>
+                                        data?.leads?.map((Item, index) => (
+                                            <TableRow key={index}>
                                             <TableCell>
                                                 <div className="font-medium">{Item.name}</div>
                                                 <div className="hidden text-sm text-muted-foreground md:inline">
