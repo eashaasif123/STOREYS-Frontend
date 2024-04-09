@@ -1,15 +1,10 @@
 'use client'
 
-import * as React from "react";
-import { useState } from 'react'
-import Image from "next/image"
+import React, { useState, useEffect } from 'react'
 import Link from "next/link"
 import {
-    File,
     Home,
     LineChart,
-    ListFilter,
-    MoreHorizontal,
     Package,
     Package2,
     PanelLeft,
@@ -41,7 +36,6 @@ import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -63,16 +57,25 @@ import {
 import DataTableDemo from "./table"
 import UploadDialog from './UploadDialog'
 import AssignLeadsDialog from './AssignLead'
+import LeadsDetails from './leadsDetail'
 
 export default function Dashboard() {
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
+    const [open2, setOpen2] = useState(false);
     const [selectedLeads, setSelectedLeads] = useState([]);
     const [fetchData, setFetchData] = useState(false);
 
+    useEffect(() => {
+        const box = document.querySelector('.animated-box');
+        box.classList.add('animate');
+        // Cleanup function to remove animation class on unmount
+        return () => box.classList.remove('animate');
+      }, []);
+
     return (
         <div className="flex min-h-screen w-full flex-col bg-muted/40">
-            <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col shadow-md border-r bg-background sm:flex">
+            <aside className="bg-blue-500 text-white font-semibold fixed inset-y-0 left-0 z-10 hidden w-14 flex-col shadow-md border-r bg-background sm:flex">
                 <nav className="flex flex-col items-center gap-4 px-2 py-4">
                     <Link
                         href="#"
@@ -86,7 +89,7 @@ export default function Dashboard() {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Link
-                                href="#"
+                                href="/dashboard/admin"
                                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                             >
                                 <Home className="h-5 w-5" />
@@ -225,7 +228,7 @@ export default function Dashboard() {
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
-                                    <Link href="#">Dashboard</Link>
+                                    <Link href="/dashboard/admin">Dashboard</Link>
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
@@ -276,9 +279,9 @@ export default function Dashboard() {
                     <Tabs defaultValue="all">
                         <div className="flex items-center">
                             <TabsList>
-                                <TabsTrigger value="all">All</TabsTrigger>
-                                <TabsTrigger value="unassigned">Unassigned Leads</TabsTrigger>
-                                <TabsTrigger value="assigned">Assigned Leads</TabsTrigger>
+                                <TabsTrigger className="bg-green-400 text-white p-2 font-semibold rounded-md mx-1" value="all">All</TabsTrigger>
+                                <TabsTrigger className="bg-green-400 text-white p-2 font-semibold rounded-md mx-1" value="unassigned">Unassigned Leads</TabsTrigger>
+                                <TabsTrigger className="bg-green-400 text-white p-2 font-semibold rounded-md mx-1" value="assigned">Assigned Leads</TabsTrigger>
                             </TabsList>
                             <div className="ml-auto flex items-center gap-2">
                                 <DropdownMenu>
@@ -308,15 +311,15 @@ export default function Dashboard() {
                                         Export
                                     </span>
                                 </Button> */}
-                                <Button onClick={()=>{setOpen(true)}} size="sm" className="h-7 gap-1">
-                                    <PlusCircle className="h-3.5 w-3.5" />
+                                <Button onClick={()=>{setOpen(true)}} size="sm" className="h-7 gap-1 bg-blue-400 text-white p-2 font-semibold">
+                                    <PlusCircle className="h-4 w-4 font-semibold" />
                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                         Add Leads
                                     </span>
                                 </Button>
                             </div>
                         </div>
-                        <TabsContent value="all">
+                        <TabsContent className="animated-box" value="all">
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Leads</CardTitle>
@@ -325,7 +328,7 @@ export default function Dashboard() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsType={"all"}/>
+                                    <DataTableDemo fetchDataAgain={fetchData} open1={open1} setOpen1={setOpen1} setSelectedLeads={setSelectedLeads} leadsDeatils={open2} setleadsDetails={setOpen2} leadsType={"all"}/>
                                 </CardContent>
                                 <CardFooter>
                                     <div className="text-xs text-muted-foreground">
@@ -338,7 +341,7 @@ export default function Dashboard() {
                         <TabsContent value="unassigned">
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Unassigned Leads</CardTitle>
+                                    <CardTitle >Unassigned Leads</CardTitle>
                                     <CardDescription>
                                         Manage your Leads and view their performance.
                                     </CardDescription>
@@ -378,6 +381,9 @@ export default function Dashboard() {
             </div>
             <UploadDialog fetchData={fetchData} setFetchData={setFetchData} open={open} setOpen={setOpen}/>
             <AssignLeadsDialog fetchData={fetchData} setFetchData={setFetchData} open={open1} setOpen={setOpen1} selectedLeads={selectedLeads}/>
+            <div className="h-[100%]">
+                <LeadsDetails open={open2} setOpen={setOpen2}/>
+            </div>
         </div>
     )
 }

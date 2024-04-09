@@ -7,3 +7,24 @@
 body {
     font-family: "DM Sans", sans-serif !important;
 }
+.animated-box {
+    margin-top: 20px;
+    border-radius: 10px;
+    /* Set transparent background */
+    background-color: transparent;
+    /* Add your desired box shadow */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Set initial opacity to 0 (invisible) */
+  }
+  /* Create an animation class */
+  .animated-box.animate {
+    /* Animate opacity to 1 (visible) */
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  
+  /* Define the animation */
+  @keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+  }
+  

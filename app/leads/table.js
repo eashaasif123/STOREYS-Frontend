@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { CaretSortIcon, ChevronDownIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef, useReactTable, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel } from "@tanstack/react-table";
 import { Button } from "@/app/components/ui/button";
@@ -83,7 +83,7 @@ const columns = [
     },
 ];
 
-export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSelectedLeads, leadsType }) {
+export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSelectedLeads, leadsType, leadsDeatils, setleadsDetails }) {
     const FetchData = async () => {
         try {
             const response = await axios.get(`https://storeys-backend.vercel.app/api/leads?type=${leadsType}`, {
@@ -133,6 +133,11 @@ export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSele
             rowSelection: rowSelection,
         },
     });
+
+    const handleRowClick = (row) => {
+        // alert(`Row clicked: ${JSON.stringify(row.original)}`);
+        setleadsDetails(!leadsDeatils);
+    };
 
     const handleSelectLeads = () => {
         setOpen1(!open1);
@@ -196,30 +201,30 @@ export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSele
                         ))}
                     </TableHeader>
                     <TableBody>
-    {table.getRowModel().rows?.length ? (
-        table.getRowModel().rows.map((row) => (
-            <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                as={Link} // Make each row a Link component
-                to={`/${row.original.id}`} // Redirect to route based on ID
-            >
-                {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                ))}
-            </TableRow>
-        ))
-    ) : (
-        <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-            </TableCell>
-        </TableRow>
-    )}
-</TableBody>
-
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    className="cursor-pointer hover:bg-slate-100"
+                                    data-state={row.getIsSelected() && "selected"}
+                                    as="div" // Changed from Link to div
+                                    onClick={() => handleRowClick(row.original)} // Add onClick event handler
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
@@ -245,9 +250,9 @@ export default function DataTableDemo({ fetchDataAgain, open1, setOpen1, setSele
                         Next
                     </Button>
                     {
-                        (leadsType==='unassigned' || leadsType==='all') && <Button variant="outline" disabled={!table.getFilteredSelectedRowModel().rows.length} size="sm" onClick={handleSelectLeads}>
-                        Assign Lead
-                    </Button>
+                        (leadsType === 'unassigned' || leadsType === 'all') && <Button variant="outline" disabled={!table.getFilteredSelectedRowModel().rows.length} size="sm" onClick={handleSelectLeads}>
+                            Assign Lead
+                        </Button>
                     }
                 </div>
             </div>

@@ -1,5 +1,10 @@
 'use client'
 import * as React from 'react'
+import { Chart, registerables } from 'chart.js'; // Importing Chart.js
+
+import { Line } from 'react-chartjs-2';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import Link from "next/link"
 import {
     Activity,
@@ -50,7 +55,11 @@ import axios from 'axios'
 
 export default function Dashboard() {
     const [data, setData] = React.useState([]);
-    const FetchData = async () => {
+    const [salesData, setSalesData] = React.useState([]);
+    const chartRef = React.useRef(null);
+    const chartRef1 = React.useRef(null);
+
+    const fetchData = async () => {
         try {
             const response = await axios.get(`https://storeys-backend.vercel.app/api/leads/limit?num=5`, {
                 headers: {
@@ -60,20 +69,94 @@ export default function Dashboard() {
             console.log(response.data);
             setData({
                 totalLeads: response.data.totalLeads,
-                leads: response.data.leads
+                leads: response.data.leads,
             });
         } catch (err) {
             console.error(err);
         }
-    }
+    };
+
     React.useEffect(() => {
-        console.log('fetching')
-        FetchData();
-    }, [])
+        console.log('fetching');
+        fetchData();
+    }, []);
+
+    const sampleSalesData = [4000, 1500, 3000, 5500, 3500, 6500];
+
+    React.useEffect(() => {
+        setSalesData(sampleSalesData);
+    }, []);
+
+    React.useEffect(() => {
+        // Registering Chart.js registerables
+        Chart.register(...registerables);
+    }, []);
+
+    React.useEffect(() => {
+        // Drawing the sales chart using Chart.js
+        const ctx = chartRef.current;
+        if (ctx) {
+            if (ctx.chart) {
+                ctx.chart.destroy(); // Destroy the existing chart
+            }
+            ctx.chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [
+                        {
+                            label: 'Sales',
+                            data: salesData,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        }
+    }, [salesData]);
+    React.useEffect(() => {
+        // Drawing the sales chart using Chart.js
+        const ctx = chartRef1.current;
+        if (ctx) {
+            if (ctx.chart) {
+                ctx.chart.destroy(); // Destroy the existing chart
+            }
+            ctx.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [
+                        {
+                            label: 'Total Leads',
+                            data: salesData,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        }
+    }, [salesData]);
+
     return (
         <div className="flex min-h-screen w-full flex-col">
-            <header style={{ zIndex: 22 }} className="flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-                <nav className="relative hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <header style={{ zIndex: 1 }} className="bg-blue-500 text-white font-semibold flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+                <nav style={{ zIndex: 11 }} className="relative hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
                         href="#"
                         className="flex items-center gap-2 text-lg font-semibold md:text-base"
@@ -88,10 +171,10 @@ export default function Dashboard() {
                         Dashboard
                     </Link>
                     <Link
-                        href="#"
+                        href="/leads"
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
-                        Orders
+                        Leads
                     </Link>
                     <Link
                         href="/products"
@@ -162,16 +245,8 @@ export default function Dashboard() {
                         </nav>
                     </SheetContent>
                 </Sheet>
-                <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+                <div style={{ zIndex: 11 }} className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
                     <form className="ml-auto flex-1 sm:flex-initial">
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder="Search products..."
-                                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-                            />
-                        </div>
                     </form>
                     <DropdownMenu className="z-10">
                         <DropdownMenuTrigger asChild>
@@ -192,22 +267,33 @@ export default function Dashboard() {
                 </div>
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-                    <Card>
+                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 mx-auto">
+                <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Total Leads
+                                Total Employes
                             </CardTitle>
-                            <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{data.totalLeads}</div>
-                            <p className="text-xs text-muted-foreground">
+                            <div style={{ width: 180, margin: 'auto' }}>
+                                <CircularProgressbar
+                                    value={data.totalLeads??0}
+                                    maxValue={100}
+                                    text={`+${data.totalLeads??0}%`}
+                                />
+                            </div>
+                            <p className="text-md text-muted-foreground mt-5 text-center">
                                 +20.1% from last month
                             </p>
                         </CardContent>
                     </Card>
                     <Card>
+                        <canvas ref={chartRef} id="salesChart" width="400" height="400"></canvas>
+                    </Card>
+                    <Card>
+                        <canvas ref={chartRef1} id="salesChart1" width="400" height="400"></canvas>
+                    </Card>
+                    {/* <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 Subscriptions
@@ -244,10 +330,10 @@ export default function Dashboard() {
                                 +201 since last hour
                             </p>
                         </CardContent>
-                    </Card>
+                    </Card> */}
                 </div>
                 <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-                    <Card className="xl:col-span-2">
+                    <Card className="xl:col-span-2 bg-blue-100">
                         <CardHeader className="flex flex-row items-center">
                             <div className="grid gap-2">
                                 <CardTitle>Recent Leads</CardTitle>
@@ -308,7 +394,7 @@ export default function Dashboard() {
                             </Table>
                         </CardContent>
                     </Card>
-                    <Card>
+                    <Card className="bg-yellow-200">
                         <CardHeader>
                             <CardTitle>Recent Sales</CardTitle>
                         </CardHeader>
